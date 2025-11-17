@@ -1,0 +1,50 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.pdb
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.spec
+
+# ---- FastAPI / Uvicorn ----
+*.log
+
+# ---- SQLite Database ----
+*.db
+*.sqlite3
+
+# ---- Environment / Virtualenv ----
+.env
+.env.*
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+
+# ---- IDE / Editor ----
+
+# VSCode
+.vscode/
+.history/
+
+# Pycharm / JetBrains
+.idea/
+
+# ---- System files ----
+.DS_Store
+Thumbs.db
+
+# ---- Python tooling ----
+pip-wheel-metadata/
+.mypy_cache/
+.pytest_cache/
+coverage.xml
+htmlcov/
+.cache/
