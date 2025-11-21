@@ -28,7 +28,7 @@ def create_url(url_data: schemas.URLCreate, db:Session = Depends(get_db)):
     
 @redirect_router.get("/{short_code}")
 def Redirect_to_original(short_code: str, db: Session = Depends(get_db)):
-    print("SHORT CODE RECIBIDO:", short_code)
+    print("SHORT CODE RECIEVED:", short_code)
     url_record = db.query(models.URL).filter(models.URL.short_code == short_code).first()
 
     if not url_record:

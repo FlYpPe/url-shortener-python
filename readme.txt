@@ -1,4 +1,5 @@
 project info:
+  This project is an API to add urls and get shorter and easier alternatives, using the alternatives will redirect to original urls automaticatly.
   database:
     sqlite
 
