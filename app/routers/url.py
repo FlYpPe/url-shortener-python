@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from app import models, schemas, utils
 from app.database import get_db
@@ -28,7 +28,6 @@ def create_url(url_data: schemas.URLCreate, db:Session = Depends(get_db)):
     
 @redirect_router.get("/{short_code}")
 def Redirect_to_original(short_code: str, db: Session = Depends(get_db)):
-    print("SHORT CODE RECIEVED:", short_code)
     url_record = db.query(models.URL).filter(models.URL.short_code == short_code).first()
 
     if not url_record:
@@ -36,7 +35,18 @@ def Redirect_to_original(short_code: str, db: Session = Depends(get_db)):
 
     return RedirectResponse(url=url_record.original_url)
 
-    
+@router.get("/info")
+def url_info(url: str = Query(..., alias="url"), db: Session = Depends(get_db)):
+    print(url)
+    short_url = db.query(models.URL).filter(models.URL.original_url == url).first()
+    if not short_url:
+        raise HTTPException(status_code=404, detail="URL not found")
+    return {
+        "original_url": short_url.original_url,
+        "short_code": short_url.short_code,
+        "created_at": short_url.created_at
+    }
+
 @router.get("/")
 def root():
     return {"message": "Welcome to the URL Shortener API"}
