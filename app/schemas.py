@@ -7,5 +7,6 @@ class URLResponse(BaseModel):
     id: int
     original_url: str
     short_code: str
+    clicks: int
     class config:
         orm_mode = True

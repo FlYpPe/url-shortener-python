@@ -14,7 +14,7 @@ def create_url(url_data: schemas.URLCreate, db:Session = Depends(get_db)):
     existing = db.query(models.URL).filter(models.URL.short_code == short_code).first()
     if existing:
         short_code = utils.generate_short_url()
-    
+
     new_url = models.URL(
         original_url=str(url_data.original_url),
         short_code=short_code
@@ -25,14 +25,15 @@ def create_url(url_data: schemas.URLCreate, db:Session = Depends(get_db)):
     db.refresh(new_url)
 
     return new_url
-    
+
 @redirect_router.get("/{short_code}")
 def Redirect_to_original(short_code: str, db: Session = Depends(get_db)):
     url_record = db.query(models.URL).filter(models.URL.short_code == short_code).first()
 
     if not url_record:
         raise HTTPException(status_code=404, detail="URL not found")
-
+    url_record.clicks += 1
+    db.commit()
     return RedirectResponse(url=url_record.original_url)
 
 @router.get("/info")
@@ -44,6 +45,7 @@ def url_info(url: str = Query(..., alias="url"), db: Session = Depends(get_db)):
     return {
         "original_url": short_url.original_url,
         "short_code": short_url.short_code,
+        "clicks": short_url.clicks,
         "created_at": short_url.created_at
     }
 
